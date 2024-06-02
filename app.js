@@ -1,4 +1,5 @@
 const express = require("express");
+require("dotenv").config();
 const axios = require("axios");
 const cheerio = require("cheerio");
 const hbs = require("hbs");
@@ -45,6 +46,7 @@ const headers2 = {
 
 // // Directory path where the executable might be located
 const directoryPath = "./chrome/win64-125.0.6422.141/chrome-win64/chrome.exe";
+// const directoryPath = "process.env.PUPPETEER_EXECUTABLE_PATH";
 
 // // // Read the contents of the directory
 // // fs.readdir(directoryPath, (err, files) => {
@@ -70,8 +72,18 @@ app.get("/", async (req, res) => {
   try {
     const browser = await puppeteer.launch({
       headless: true,
-      executablePath: `${directoryPath}`,
-      args: ["--ignore-certificate-errors"],
+      // executablePath: `${directoryPath}`,
+      executablePath:
+        process.env.Node_ENV === "production"
+          ? process.env.PUPPETEER_EXECUTABLE_PATH
+          : puppeteer.executablePath(),
+      args: [
+        "--ignore-certificate-errors",
+        "--disable-setuid-sandbox",
+        "--no-sandbox",
+        "--single-process",
+        "--no-zygote",
+      ],
     });
     const page = await browser.newPage();
     await page.setUserAgent(
@@ -142,8 +154,18 @@ app.get("/search", async (req, res) => {
   try {
     const browser = await puppeteer.launch({
       headless: true,
-      executablePath: `${directoryPath}`,
-      args: ["--ignore-certificate-errors"],
+      // executablePath: `${directoryPath}`,
+      executablePath:
+        process.env.Node_ENV === "production"
+          ? process.env.PUPPETEER_EXECUTABLE_PATH
+          : puppeteer.executablePath(),
+      args: [
+        "--ignore-certificate-errors",
+        "--disable-setuid-sandbox",
+        "--no-sandbox",
+        "--single-process",
+        "--no-zygote",
+      ],
     });
     const page = await browser.newPage();
     await page.setUserAgent(
@@ -235,8 +257,18 @@ app.get("/compare", async (req, res) => {
   try {
     const browser = await puppeteer.launch({
       headless: true,
-      executablePath: `${directoryPath}`,
-      args: ["--ignore-certificate-errors"],
+      // executablePath: `${directoryPath}`,
+      executablePath:
+        process.env.Node_ENV === "production"
+          ? process.env.PUPPETEER_EXECUTABLE_PATH
+          : puppeteer.executablePath(),
+      args: [
+        "--ignore-certificate-errors",
+        "--disable-setuid-sandbox",
+        "--no-sandbox",
+        "--single-process",
+        "--no-zygote",
+      ],
     });
 
     const amazonPage = await browser.newPage();
